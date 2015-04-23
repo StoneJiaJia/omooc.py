@@ -6,18 +6,22 @@ import math
 # intialize globals
 width = 450
 height = 300
-pos = []
-list = []
+pos_list = []
+list = [(1000,1000)]
 ball_radius = 15
 ball_color = "Red"
 shape = 'cricle'
+i = 0
+shape_list = []
 # helper function
-def distance(p, q):
-    return math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
+
 #define shape
+
+
 def to_circle():
-    global shape
+    global cricle_list
     shape = 'cricle'
+    
 
 def to_square():
     global shape
@@ -29,7 +33,12 @@ def to_triangle():
     
 # define event handler for mouse click, draw
 def click(pos):
+    global pos_list
     list.append(pos)
+    pos_list.append(pos)
+     
+    shape_list.append(shape)
+    
       
 #    if distance(ball_pos, pos) < ball_radius:
 #        if ball_color == "Red":
@@ -39,17 +48,24 @@ def click(pos):
 #        ball_color = "Red"
 
 def draw(canvas):
-    global pos
-    if shape == 'cricle':
-        for ball_pos in list:
-            canvas.draw_circle(ball_pos, ball_radius, 1, "Black", ball_color)
-            
-    if shape == 'square':
-        for pos in list:
-            canvas.draw_polygon([[pos[0], pos[1]], [pos[0], pos[1]+20], [pos[0]+20, pos[1]+20], [pos[0]+20, pos[1]], [pos[0],pos[1]]], 2, 'Black', 'White')
-    if shape == 'triangle':
-        for pos in list:
-            canvas.draw_polygon([[pos[0], pos[1]],[pos[0]-15,pos[1]+30],[pos[0]+15, pos[1]+30],[pos[0],pos[1]]], 2,'Black','White')
+    i = 0
+    while i < len(pos_list):
+        if shape_list[i] == 'circle': # first use "=" instead, a "classic" error
+            canvas.draw_circle(pos_list[i], 20, 2, 'Blue')
+            print pos_list[i]
+        elif shape_list[i] == 'triangle':
+            canvas.draw_polygon([(pos_list[i][0],pos_list[i][1] + 20),
+                                (pos_list[i][0] + 10,pos_list[i][1] - 10),
+                                (pos_list[i][0] - 10,pos_list[i][1] - 10)],
+                                2, 'Blue')
+        else: # i.e.: shape_list == "square" 
+            canvas.draw_polygon([(pos_list[i][0] - 15,pos_list[i][1] + 15),
+                                (pos_list[i][0] + 15,pos_list[i][1] + 15),
+                                (pos_list[i][0] + 15,pos_list[i][1] - 15),
+                                (pos_list[i][0] - 15,pos_list[i][1] - 15)],
+                                2, 'Blue')
+        i += 1
+   
     
 # create frame
 frame = simplegui.create_frame("Mouse selection", width, height)
